@@ -1,20 +1,23 @@
-class Player {
+public class Player
+{
     public string Name { get; set; }
     public int Health { get; set; }
-    public string[,] inventory = new string[10,5];
-
-    public void Move(int direction)
+    public List<string> Inventory { get; set; }
+    
+    public void TakeDamage(int damage)
     {
-        // move one unit in the direction
+        Health -= damage;
+        Console.WriteLine($"{Name} took {damage} damage!");
+        
+        // Violation: Player handles its own persistence
+        File.AppendAllText("game_log.txt", $"{Name} damaged\n");
     }
-
-    public void Jump(int direction)
+    
+    public void AddItem(string item)
     {
-        // move up or down based on jump input
-    }
-
-    public void Attack(int direction)
-    {
-        // attachs in the direction of player input
+        Inventory.Add(item);
+        // Violation: Hardcoded inventory limit logic
+        if (Inventory.Count > 10)
+            Inventory.RemoveAt(0);
     }
 }
